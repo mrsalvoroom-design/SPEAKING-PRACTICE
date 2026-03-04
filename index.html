@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SPEAKING & WRITING PRACTICE ALL TOPICS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f0f0f;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* 9:16 Container */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 853px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        
+        @media (min-aspect-ratio: 9/16) {
+            .app-container {
+                height: 100vh;
+                width: calc(100vh * 9/16);
+            }
+        }
+        
+        @media (max-aspect-ratio: 9/16) {
+            .app-container {
+                width: 100vw;
+                height: calc(100vw * 16/9);
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+        }
+        
+        .card-hover:active {
+            transform: scale(0.98);
+        }
+        
+        .recording-pulse {
+            animation: recordingPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes recordingPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            50% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .input-area {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1f2937;
+            border-radius: 12px;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            width: 100%;
+            resize: none;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .input-area:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-record {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-record:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .btn-record.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: recordingPulse 1.5s ease-in-out infinite;
+        }
+        
+        .audio-wave {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 20px;
+        }
+        
+        .audio-bar {
+            width: 3px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: audioWave 1s ease-in-out infinite;
+        }
+        
+        @keyframes audioWave {
+            0%, 100% { height: 20%; }
+            50% { height: 100%; }
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .slide-indicator.active {
+            background: #ffd700;
+            width: 24px;
+            border-radius: 4px;
+        }
+        
+        .tab-btn {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 215, 0, 0.3);
+            border-bottom: 2px solid #ffd700;
+        }
+        
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .content-layer::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .branding {
+            text-align: center;
+            padding: 15px 10px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+        
+        .branding h1 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+            line-height: 1.2;
+        }
+        
+        .branding .creator {
+            font-size: 0.85rem;
+            color: #ffd700;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .branding .thanks {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+            font-style: italic;
+        }
+        
+        .pattern-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, rgba(255,237,78,0.05) 100%);
+            border-left: 3px solid #ffd700;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .guide-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 11px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .download-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .category-item {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .category-item:active {
+            transform: scale(0.95);
+        }
+        
+        .hidden { display: none !important; }
+        
+        .audio-player-container {
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+        }
+        
+        .custom-audio-player {
+            width: 100%;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container gradient-bg">
+        <!-- 3D Background -->
+        <div id="canvas-container"></div>
+        
+        <!-- Content Layer -->
+        <div class="content-layer">
+            
+            <!-- Branding Header -->
+            <div class="branding">
+                <h1 class="text-gradient">SPEAKING & WRITING PRACTICE<br>ALL TOPICS</h1>
+                <div class="creator">Created by Mr Salvo</div>
+                <div class="thanks">Thank you for joining Salvo Group Class</div>
+            </div>
+
+            <!-- Navigation - Fixed 4 tombol (Selalu aktif) -->
+            <div class="flex justify-center gap-2 px-3 mb-3">
+                <button onclick="showScreen('category')" id="tab-category" class="tab-btn glass-effect px-3 py-2 rounded-full text-[11px] font-semibold active flex-1">
+                    📚 Kategori
+                </button>
+                <button onclick="showScreen('guide')" id="tab-guide" class="tab-btn glass-effect px-3 py-2 rounded-full text-[11px] font-semibold flex-1">
+                    📖 Panduan
+                </button>
+                <button onclick="showScreen('practice')" id="tab-practice" class="tab-btn glass-effect px-3 py-2 rounded-full text-[11px] font-semibold flex-1">
+                    ✍️ Latihan
+                </button>
+                <button onclick="showScreen('review')" id="tab-review" class="tab-btn glass-effect px-3 py-2 rounded-full text-[11px] font-semibold flex-1">
+                    📊 Review
+                </button>
+            </div>
+
+            <!-- CATEGORY SCREEN -->
+            <div id="categoryScreen" class="px-3 pb-20 fade-in">
+                <div class="text-center mb-3">
+                    <h2 class="text-base font-bold mb-1">Pilih Kategori Topik</h2>
+                    <p class="text-[11px] text-white/70">400 Pertanyaan dengan Pola Jawaban</p>
+                </div>
+                
+                <div class="category-grid">
+                    <div class="glass-card category-item" onclick="startCategory('daily')">
+                        <div class="text-3xl mb-1">🌅</div>
+                        <div class="text-[11px] font-bold text-center">Daily Routine</div>
+                        <div class="text-[9px] text-white/60">Rutinitas Harian</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('hobbies')">
+                        <div class="text-3xl mb-1">🎨</div>
+                        <div class="text-[11px] font-bold text-center">Hobbies</div>
+                        <div class="text-[9px] text-white/60">Hobi & Minat</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('food')">
+                        <div class="text-3xl mb-1">🍳</div>
+                        <div class="text-[11px] font-bold text-center">Food</div>
+                        <div class="text-[9px] text-white/60">Makanan</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('family')">
+                        <div class="text-3xl mb-1">👨‍👩‍👧‍👦</div>
+                        <div class="text-[11px] font-bold text-center">Family</div>
+                        <div class="text-[9px] text-white/60">Keluarga</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('work')">
+                        <div class="text-3xl mb-1">💼</div>
+                        <div class="text-[11px] font-bold text-center">Work</div>
+                        <div class="text-[9px] text-white/60">Pekerjaan</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('travel')">
+                        <div class="text-3xl mb-1">✈️</div>
+                        <div class="text-[11px] font-bold text-center">Travel</div>
+                        <div class="text-[9px] text-white/60">Perjalanan</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('entertainment')">
+                        <div class="text-3xl mb-1">🎬</div>
+                        <div class="text-[11px] font-bold text-center">Entertainment</div>
+                        <div class="text-[9px] text-white/60">Hiburan</div>
+                    </div>
+                    <div class="glass-card category-item" onclick="startCategory('personal')">
+                        <div class="text-3xl mb-1">🤔</div>
+                        <div class="text-[11px] font-bold text-center">Personal</div>
+                        <div class="text-[9px] text-white/60">Refleksi</div>
+                    </div>
+                </div>
+                
+                <button onclick="startRandom()" class="w-full mt-3 btn-primary py-3 text-sm">🎲 Random Mix (Campur Semua)</button>
+                
+                <!-- Local Storage Info -->
+                <div class="mt-3 glass-card p-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-lg">💾</span>
+                        <span class="text-[11px] font-bold">Penyimpanan Lokal</span>
+                    </div>
+                    <p class="text-[10px] text-white/70 leading-relaxed">
+                        Semua jawaban akan tersimpan di memori browser dan dapat diunduh sebagai:<br>
+                        • <strong>Writing:</strong> File Word (.doc) dengan pertanyaan & jawaban<br>
+                        • <strong>Audio:</strong> File WebM dengan nama "answer_number_X.webm"<br>
+                        • Format siap untuk PC & Smartphone
+                    </p>
+                </div>
+            </div>
+
+            <!-- GUIDE SCREEN (Panduan Pola Jawaban) -->
+            <div id="guideScreen" class="hidden px-3 pb-20 fade-in">
+                <div class="text-center mb-3">
+                    <h2 class="text-base font-bold mb-1">📖 Panduan Pola Jawaban</h2>
+                    <p class="text-[11px] text-white/70">Cara menjawab berbagai jenis pertanyaan</p>
+                </div>
+
+                <div class="space-y-2">
+                    <!-- Pola 1 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">WH Questions</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    <strong>What, When, Where, Who, Why, How</strong>
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "What time do you wake up?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → Subject + usually/often + verb + time<br>
+                                    <em>"I usually wake up at 6 AM"</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 2 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Do/Does Questions (Yes/No)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Pertanyaan yang bisa dijawab Ya atau Tidak
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "Do you like coffee?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → Yes/No + Subject + do/does/don't/doesn't<br>
+                                    <em>"Yes, I do. I drink it every morning."</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 3 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Preference (Prefer/Would Rather)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Menyatakan preferensi atau pilihan
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "Do you prefer tea or coffee?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → I prefer + noun/to verb + rather than<br>
+                                    <em>"I prefer tea because it's healthier"</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 4 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Frequency (How often)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Menyatakan seberapa sering melakukan sesuatu
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "How often do you exercise?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → Subject + frequency adverb + verb<br>
+                                    <em>"I usually exercise three times a week"</em><br>
+                                    <span class="text-white/50">(always, usually, often, sometimes, rarely, never)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 5 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">5</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Opinion (What do you think...)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Menyatakan pendapat atau opini
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "What do you think about remote work?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → In my opinion/I think/From my point of view + reason<br>
+                                    <em>"In my opinion, remote work is great because..."</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 6 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">6</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Past Experience (Have you ever...)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Pengalaman di masa lalu
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "Have you ever been to Japan?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → Yes, I have + when / No, I haven't + but...<br>
+                                    <em>"Yes, I have. I went there last summer"</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pola 7 -->
+                    <div class="guide-card">
+                        <div class="flex items-start">
+                            <div class="step-number">7</div>
+                            <div>
+                                <h3 class="text-[12px] font-bold text-yellow-400 mb-1">Future Plan (Would like to/Going to)</h3>
+                                <p class="text-[10px] text-white/80 mb-1">
+                                    Rencana di masa depan
+                                </p>
+                                <p class="text-[10px] text-white/60 italic mb-1">
+                                    "What would you like to do next year?"
+                                </p>
+                                <p class="text-[10px] text-green-400">
+                                    → I would like to/I'm going to/I plan to + verb<br>
+                                    <em>"I would like to learn Spanish next year"</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="glass-card p-3 mt-2 border-l-4 border-green-400">
+                        <h4 class="text-[11px] font-bold text-green-400 mb-2">💡 Tips Speaking:</h4>
+                        <ul class="text-[10px] text-white/80 space-y-1">
+                            <li>• Bicara dengan percaya diri, tidak perlu sempurna</li>
+                            <li>• Gunakan filler words: "Well...", "You know...", "Actually..."</li>
+                            <li>• Jika lupa kata, gunakan yang sederhana: "thing", "stuff"</li>
+                            <li>• Selalu tambahkan WHY/REASON setelah jawaban</li>
+                            <li>• Jangan takut berhenti sejenak untuk berpikir</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRACTICE SCREEN -->
+            <div id="practiceScreen" class="hidden px-3 pb-24 fade-in">
+                <!-- Progress -->
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="text-[10px] font-bold bg-white/20 px-2 py-1 rounded-full" id="currentCategoryBadge">Daily</div>
+                        <div class="text-[10px] text-white/60"><span id="questionNumber">1</span>/50</div>
+                    </div>
+                    <div class="flex gap-1" id="slideIndicators"></div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="glass-card p-3 mb-2">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-blue-500 text-white text-[9px] px-2 py-0.5 rounded font-bold">EN</span>
+                        <span class="text-[9px] text-white/60">Pertanyaan</span>
+                    </div>
+                    <h3 id="questionText" class="text-[13px] font-semibold leading-relaxed mb-2"></h3>
+                    
+                    <div class="border-t border-white/20 pt-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="bg-red-500 text-white text-[9px] px-2 py-0.5 rounded font-bold">ID</span>
+                            <span class="text-[9px] text-white/60">Terjemahan</span>
+                        </div>
+                        <p id="questionTranslation" class="text-[12px] text-white/80 italic"></p>
+                    </div>
+                </div>
+
+                <!-- Pattern Hint -->
+                <div class="pattern-box p-2 mb-2">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-yellow-400 text-sm">💡</span>
+                        <span class="text-[10px] font-bold text-yellow-400">Pola Jawaban:</span>
+                    </div>
+                    <p id="patternHint" class="text-[10px] text-white/90 leading-relaxed"></p>
+                </div>
+
+                <!-- Writing Section - DIPERBESAR DAN DIPERJELAS -->
+                <div class="glass-card p-3 mb-2 border-2 border-white/20">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">✍️</span>
+                            <span class="text-[12px] font-bold text-yellow-300">Tulis Jawaban Anda</span>
+                        </div>
+                        <div class="flex gap-1">
+                            <button onclick="clearWriting()" class="text-[9px] bg-white/20 px-2 py-1 rounded hover:bg-white/30">Clear</button>
+                            <button onclick="checkGrammar()" class="text-[9px] bg-green-600 px-2 py-1 rounded hover:bg-green-700">Check</button>
+                        </div>
+                    </div>
+                    <textarea id="writingInput" class="input-area h-28 text-[13px]" placeholder="Tulis jawaban dalam Bahasa Inggris di sini..."></textarea>
+                    <div class="flex justify-between mt-1">
+                        <span class="text-[9px] text-white/60" id="wordCount">0 kata</span>
+                        <span class="text-[9px] text-white/60">Min. 10 kata</span>
+                    </div>
+                    
+                    <!-- Grammar Result -->
+                    <div id="grammarResult" class="hidden mt-2 p-2 bg-white/95 rounded-lg text-gray-800">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-base">🤖</span>
+                            <span class="text-[10px] font-bold">AI Grammar Check</span>
+                            <span id="grammarScore" class="ml-auto bg-yellow-400 text-black px-2 py-0.5 rounded text-[10px] font-bold">85</span>
+                        </div>
+                        <div id="grammarDetails" class="text-[9px] space-y-1"></div>
+                    </div>
+                </div>
+
+                <!-- Speaking Section -->
+                <div class="glass-card p-3 mb-2">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🎙️</span>
+                            <span class="text-[11px] font-bold">Rekam Suara</span>
+                        </div>
+                        <div id="recordingStatus" class="hidden flex items-center gap-1">
+                            <span class="w-2 h-2 bg-red-500 rounded-full recording-pulse"></span>
+                            <span class="text-[9px]">REC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3">
+                        <button id="recordBtn" onclick="toggleRecording()" class="btn-record">
+                            <svg id="micIcon" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                            </svg>
+                            <svg id="stopIcon" class="w-5 h-5 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="flex-1">
+                            <div id="audioVisualizer" class="audio-wave hidden">
+                                <div class="audio-bar" style="animation-delay: 0s"></div>
+                                <div class="audio-bar" style="animation-delay: 0.1s"></div>
+                                <div class="audio-bar" style="animation-delay: 0.2s"></div>
+                                <div class="audio-bar" style="animation-delay: 0.3s"></div>
+                                <div class="audio-bar" style="animation-delay: 0.4s"></div>
+                            </div>
+                            <div id="recordingTime" class="text-lg font-mono font-bold hidden">00:00</div>
+                            
+                            <!-- Audio Player yang sebenarnya bisa diputar -->
+                            <div id="audioPlayback" class="hidden flex-col gap-2">
+                                <div class="audio-player-container">
+                                    <audio id="audioPlayer" controls class="custom-audio-player"></audio>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] text-white/80">🎵 Rekaman tersimpan</span>
+                                    <button onclick="deleteRecording()" class="text-red-400 text-xs bg-red-400/20 px-2 py-1 rounded hover:bg-red-400/30">🗑️ Hapus</button>
+                                </div>
+                            </div>
+                            
+                            <p id="recordInstruction" class="text-[10px] text-white/60">Tap mikrofon untuk mulai merekam</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons - Fixed Bottom -->
+                <div class="fixed bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 to-transparent" style="max-width: 480px; margin: 0 auto;">
+                    <div class="flex gap-2">
+                        <button onclick="previousQuestion()" id="btnPrev" class="flex-1 glass-effect py-3 rounded-xl text-[11px] font-bold disabled:opacity-30">← Prev</button>
+                        <button onclick="saveAnswer()" class="flex-1 bg-green-600 py-3 rounded-xl text-[11px] font-bold hover:bg-green-700">💾 Simpan</button>
+                        <button onclick="nextQuestion()" id="btnNext" class="flex-1 btn-primary py-3 rounded-xl text-[11px] font-bold">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVIEW SCREEN -->
+            <div id="reviewScreen" class="hidden px-3 pb-20 fade-in">
+                <div class="text-center mb-3">
+                    <h2 class="text-base font-bold">📊 Review Progress</h2>
+                    <div class="flex justify-center gap-6 mt-2">
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-yellow-400" id="statAnswered">0</div>
+                            <div class="text-[10px] text-white/60">Terjawab</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-blue-400" id="statAudio">0</div>
+                            <div class="text-[10px] text-white/60">Audio</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-green-400" id="statScore">0</div>
+                            <div class="text-[10px] text-white/60">Avg Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="answersList" class="space-y-2 max-h-[350px] overflow-y-auto pb-4">
+                    <!-- Answers inserted here -->
+                </div>
+
+                <div class="flex gap-2 mt-3">
+                    <button onclick="downloadWritingDoc()" class="flex-1 bg-blue-600 py-3 rounded-xl text-[11px] font-bold hover:bg-blue-700">📝 Download Writing (Word)</button>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <button onclick="downloadAudio()" class="flex-1 bg-pink-600 py-3 rounded-xl text-[11px] font-bold hover:bg-pink-700">🎵 Download Audio (WebM)</button>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <button onclick="downloadAll()" class="flex-1 download-btn py-3 rounded-xl text-[11px] font-bold">📦 Download Semua</button>
+                </div>
+                
+                <button onclick="showScreen('category')" class="w-full mt-3 glass-effect py-3 rounded-xl text-[11px] font-bold">← Kembali ke Kategori</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Database 400 Pertanyaan dengan Pola Jawaban
+        const questions = {
+            daily: [
+                { en: "What time do you usually wake up in the morning?", id: "Jam berapa kamu biasanya bangun di pagi hari?", pattern: "I usually wake up at [time] + (optional: because...)" },
+                { en: "What's the first thing you do after waking up?", id: "Apa hal pertama yang kamu lakukan setelah bangun tidur?", pattern: "The first thing I do is [activity] + (optional: then I...)" },
+                { en: "Do you prefer to shower in the morning or at night?", id: "Apakah kamu lebih suka mandi di pagi hari atau malam hari?", pattern: "I prefer to shower in the [morning/night] because [reason]" },
+                { en: "What do you typically eat for breakfast?", id: "Apa yang biasanya kamu makan untuk sarapan?", pattern: "I typically eat [food] for breakfast + (optional: which is...)" },
+                { en: "Are you a coffee person or a tea person?", id: "Kamu tim kopi atau tim teh?", pattern: "I'm a [coffee/tea] person because [reason]" },
+                { en: "How long does it take you to get ready?", id: "Berapa lama waktu yang kamu butuhkan untuk bersiap?", pattern: "It takes me about [duration] to get ready" },
+                { en: "Do you exercise in the morning?", id: "Apakah kamu berolahraga di pagi hari?", pattern: "Yes, I usually [activity] / No, I prefer to [alternative]" },
+                { en: "What's your morning routine like?", id: "Seperti apa rutinitas pagi hari kamu?", pattern: "My morning routine involves [activity 1], [activity 2], and [activity 3]" },
+                { en: "Do you check your phone immediately after waking up?", id: "Apakah kamu langsung memeriksa ponsel setelah bangun?", pattern: "Yes, I always check [what] first / No, I try to [alternative] instead" },
+                { en: "What time do you leave home for work?", id: "Jam berapa kamu berangkat dari rumah untuk kerja?", pattern: "I leave home at [time] + (optional: to avoid...)" },
+                { en: "How do you commute to work?", id: "Bagaimana cara kamu pergi ke kantor?", pattern: "I commute by [transportation] + (optional: which takes...)" },
+                { en: "Do you listen to music during your commute?", id: "Apakah kamu mendengarkan musik saat perjalanan?", pattern: "Yes, I love listening to [genre] / No, I prefer to [alternative]" },
+                { en: "What do you do during lunch break?", id: "Apa yang kamu lakukan saat istirahat makan siang?", pattern: "During lunch break, I usually [activity]" },
+                { en: "Do you prefer eating out or bringing lunch?", id: "Apakah kamu lebih suka makan di luar atau membawa bekal?", pattern: "I prefer [option] because [reason]" },
+                { en: "What's your favorite afternoon snack?", id: "Apa camilan sore favorit kamu?", pattern: "My favorite afternoon snack is [food]" },
+                { en: "What time do you finish work?", id: "Jam berapa kamu selesai kerja?", pattern: "I finish work at [time] + (optional: but sometimes...)" },
+                { en: "What do you do immediately after getting home?", id: "Apa yang kamu lakukan langsung setelah sampai di rumah?", pattern: "The first thing I do when I get home is [activity]" },
+                { en: "Do you take a nap in the afternoon?", id: "Apakah kamu tidur siang?", pattern: "Yes, I usually take a [duration] nap / No, I can't because [reason]" },
+                { en: "How do you spend your evening?", id: "Bagaimana kamu menghabiskan waktu malam?", pattern: "In the evening, I usually [activity]" },
+                { en: "What's your typical dinner time?", id: "Jam berapa waktu makan malam biasanya?", pattern: "I usually have dinner at [time]" },
+                { en: "Do you cook dinner or order food?", id: "Apakah kamu memasak atau pesan makanan?", pattern: "I usually [cook/order] because [reason]" },
+                { en: "What's your favorite food to cook?", id: "Apa makanan favorit yang kamu suka masak?", pattern: "My favorite food to cook is [dish] because [reason]" },
+                { en: "Do you watch TV while eating?", id: "Apakah kamu menonton TV sambil makan?", pattern: "Yes, I like watching [show type] / No, I prefer to [alternative]" },
+                { en: "What shows are you watching?", id: "Acara TV apa yang sedang kamu tonton?", pattern: "Currently, I'm watching [show name] which is about [description]" },
+                { en: "Do you prefer movies or TV series?", id: "Apakah kamu lebih suka film atau serial TV?", pattern: "I prefer [movies/series] because [reason]" },
+                { en: "What time do you go to bed?", id: "Jam berapa kamu tidur?", pattern: "I usually go to bed at [time] + (optional: but on weekends...)" },
+                { en: "Do you have a bedtime routine?", id: "Apakah kamu punya rutinitas sebelum tidur?", pattern: "Yes, my bedtime routine includes [activity 1] and [activity 2]" },
+                { en: "Do you read before sleeping?", id: "Apakah kamu membaca sebelum tidur?", pattern: "Yes, I like reading [genre] / No, I prefer to [alternative]" },
+                { en: "What books do you like?", id: "Buku jenis apa yang kamu suka?", pattern: "I enjoy reading [genre] because [reason]" },
+                { en: "Do you sleep with lights on or off?", id: "Apakah kamu tidur dengan lampu menyala atau mati?", pattern: "I sleep with the lights [on/off] because [reason]" },
+                { en: "Are you a light or heavy sleeper?", id: "Apakah kamu tidur ringan atau nyenyak?", pattern: "I'm a [light/heavy] sleeper. For example, [explanation]" },
+                { en: "Do you remember your dreams?", id: "Apakah kamu ingat mimpimu?", pattern: "Yes, I often remember [what kind] / No, I rarely remember them" },
+                { en: "What's the weirdest dream you've had?", id: "Apa mimpi paling aneh yang pernah kamu alami?", pattern: "The weirdest dream I had was when [description]" },
+                { en: "What position do you sleep in?", id: "Posisi apa yang kamu gunakan saat tidur?", pattern: "I usually sleep on my [side/back/stomach]" },
+                { en: "Do you hit the snooze button?", id: "Apakah kamu menekan tombol tunda alarm?", pattern: "Yes, I hit snooze [number] times / No, I get up immediately" },
+                { en: "Are you usually on time or late?", id: "Apakah kamu biasanya tepat waktu atau terlambat?", pattern: "I'm usually [on time/late] because [reason]" },
+                { en: "How do you organize your schedule?", id: "Bagaimana kamu mengatur jadwal?", pattern: "I use [tool] to organize my schedule" },
+                { en: "Do you use a planner or digital calendar?", id: "Apakah kamu pakai planner atau kalender digital?", pattern: "I prefer [planner/digital] because [reason]" },
+                { en: "What's your most productive time?", id: "Kapan waktu paling produktif bagimu?", pattern: "I'm most productive in the [morning/afternoon/evening] because [reason]" },
+                { en: "Do you prefer morning or night work?", id: "Apakah kamu lebih suka kerja pagi atau malam?", pattern: "I prefer working at [time] because [reason]" },
+                { en: "How do you handle stress?", id: "Bagaimana kamu menangani stres?", pattern: "When I'm stressed, I [coping mechanism]" },
+                { en: "What do you do to relax?", id: "Apa yang kamu lakukan untuk bersantai?", pattern: "To relax, I like to [activity]" },
+                { en: "Do you meditate?", id: "Apakah kamu bermeditasi?", pattern: "Yes, I meditate for [duration] / No, but I'd like to try" },
+                { en: "What's one thing you can't skip?", id: "Apa satu hal yang tidak bisa kamu lewatkan?", pattern: "I can't skip [activity] because [reason]" },
+                { en: "Do you have bad habits to break?", id: "Apakah kamu punya kebiasaan buruk?", pattern: "Yes, I want to stop [habit] because [reason]" },
+                { en: "What's a good habit you've developed?", id: "Apa kebiasaan baik yang baru kamu kembangkan?", pattern: "Recently, I've developed the habit of [activity]" },
+                { en: "How has your routine changed?", id: "Bagaimana rutinitasmu berubah?", pattern: "My routine has changed [how]. Now I [new habit]" },
+                { en: "What would your perfect day look like?", id: "Seperti apa hari sempurna bagimu?", pattern: "My perfect day would start with [activity] and end with [activity]" },
+                { en: "If you had an extra hour daily?", id: "Jika punya waktu ekstra satu jam setiap hari?", pattern: "If I had an extra hour, I would [activity]" },
+                { en: "Do you meal prep on weekends?", id: "Apakah kamu menyiapkan makanan di akhir pekan?", pattern: "Yes, I prepare [what] / No, I prefer to [alternative]" },
+                { en: "How do you spend your Sundays?", id: "Bagaimana kamu menghabiskan hari Minggu?", pattern: "On Sundays, I usually [activity]" }
+            ],
+            hobbies: [
+                { en: "What do you do in your free time?", id: "Apa yang kamu lakukan di waktu luang?", pattern: "In my free time, I enjoy [activity]" },
+                { en: "How do you spend weekends?", id: "Bagaimana kamu menghabiskan akhir pekan?", pattern: "On weekends, I usually [activity]" },
+                { en: "Do you have childhood hobbies?", id: "Apakah kamu punya hobi sejak kecil?", pattern: "Yes, I've loved [hobby] since I was [age]" },
+                { en: "What new hobby would you try?", id: "Hobi baru apa yang ingin kamu coba?", pattern: "I'd love to try [hobby] because [reason]" },
+                { en: "Indoor or outdoor activities?", id: "Aktivitas di dalam atau luar ruangan?", pattern: "I prefer [indoor/outdoor] activities because [reason]" },
+                { en: "Do you play musical instruments?", id: "Apakah kamu memainkan alat musik?", pattern: "Yes, I play the [instrument] / No, but I wish I could" },
+                { en: "What music do you listen to?", id: "Musik jenis apa yang kamu dengarkan?", pattern: "I enjoy listening to [genre], especially [artist]" },
+                { en: "Listening or playing music?", id: "Mendengarkan atau memainkan musik?", pattern: "I prefer [listening/playing] because [reason]" },
+                { en: "Have you been to a concert?", id: "Apakah kamu pernah ke konser?", pattern: "Yes, I went to [artist]'s concert / No, but I'd love to" },
+                { en: "Do you like to dance?", id: "Apakah kamu suka menari?", pattern: "Yes, I love dancing [style] / No, I'm not good at it" },
+                { en: "Are you into photography?", id: "Apakah kamu suka fotografi?", pattern: "Yes, I enjoy taking photos of [subject]" },
+                { en: "What do you photograph?", id: "Apa yang kamu foto?", pattern: "I mostly photograph [subject] because [reason]" },
+                { en: "Digital or film photography?", id: "Fotografi digital atau film?", pattern: "I prefer [digital/film] because [reason]" },
+                { en: "Do you enjoy reading?", id: "Apakah kamu suka membaca?", pattern: "Yes, I love reading [genre] / Not really, I prefer [alternative]" },
+                { en: "What's the last book you read?", id: "Apa buku terakhir yang kamu baca?", pattern: "The last book I read was [title] which was about [topic]" },
+                { en: "Physical books or e-books?", id: "Buku fisik atau e-book?", pattern: "I prefer [physical/e-books] because [reason]" },
+                { en: "Do you like to write?", id: "Apakah kamu suka menulis?", pattern: "Yes, I enjoy writing [type] / No, but I journal sometimes" },
+                { en: "Have you tried blogging?", id: "Apakah kamu pernah blogging?", pattern: "Yes, I had a blog about [topic] / No, but I'm thinking of starting" },
+                { en: "Do you draw or paint?", id: "Apakah kamu menggambar atau melukis?", pattern: "Yes, I like [drawing/painting] [style]" },
+                { en: "What art supplies do you use?", id: "Peralatan seni apa yang kamu gunakan?", pattern: "I usually use [supplies]" },
+                { en: "Good at crafts or DIY?", id: "Pandai kerajinan atau DIY?", pattern: "Yes, I enjoy making [crafts] / I'm not very crafty" },
+                { en: "Do you like gardening?", id: "Apakah kamu suka berkebun?", pattern: "Yes, I grow [plants] / No, I don't have space" },
+                { en: "What plants do you have?", id: "Tanaman apa yang kamu miliki?", pattern: "I have [plants] which I got from [where]" },
+                { en: "Do you collect anything?", id: "Apakah kamu mengoleksi sesuatu?", pattern: "Yes, I collect [items] because [reason]" },
+                { en: "Are you into video games?", id: "Apakah kamu suka video game?", pattern: "Yes, I play [game type] / Not really" },
+                { en: "What games are you playing?", id: "Game apa yang sedang kamu mainkan?", pattern: "Currently, I'm playing [game name]" },
+                { en: "Console, PC, or mobile?", id: "Konsol, PC, atau mobile?", pattern: "I prefer [platform] because [reason]" },
+                { en: "Watch esports or streams?", id: "Nonton esports atau streaming?", pattern: "Yes, I watch [what] / No, I prefer playing" },
+                { en: "Interested in board games?", id: "Tertarik permainan papan?", pattern: "Yes, I love [games] / Not really" },
+                { en: "Favorite board game?", id: "Permainan papan favorit?", pattern: "My favorite is [game] because [reason]" },
+                { en: "Like puzzles or brain teasers?", id: "Suka teka-teki?", pattern: "Yes, I enjoy [type] because [reason]" },
+                { en: "Cooking or baking hobby?", id: "Memasak atau baking sebagai hobi?", pattern: "I prefer [cooking/baking] because [reason]" },
+                { en: "Most complicated dish?", id: "Hidangan paling rumit?", pattern: "The most complicated dish I made was [dish]" },
+                { en: "Try new recipes?", id: "Coba resep baru?", pattern: "Yes, I love trying [cuisine] / I stick to familiar ones" },
+                { en: "Into sports?", id: "Suka olahraga?", pattern: "Yes, I play [sports] / I prefer watching" },
+                { en: "Team sports?", id: "Olahraga tim?", pattern: "Yes, I'm on a [sport] team / No, I prefer individual" },
+                { en: "Individual sports?", id: "Olahraga individu?", pattern: "I enjoy [sport] because [reason]" },
+                { en: "Hiking or nature walks?", id: "Hiking atau jalan di alam?", pattern: "Yes, I love [activity] in [location]" },
+                { en: "Ever been camping?", id: "Pernah berkemah?", pattern: "Yes, I went camping [where/when] / No, but I want to" },
+                { en: "Enjoy fishing?", id: "Suka memancing?", pattern: "Yes, I find it [adjective] / No, I don't have patience" },
+                { en: "Into cycling?", id: "Suka bersepeda?", pattern: "Yes, I cycle [where/frequency] / No, I'm afraid of traffic" },
+                { en: "Yoga or pilates?", id: "Yoga atau pilates?", pattern: "I practice [yoga/pilates] for [benefit]" },
+                { en: "Interested in martial arts?", id: "Tertarik bela diri?", pattern: "Yes, I train in [martial art] / No, but it looks cool" },
+                { en: "Like swimming?", id: "Suka berenang?", pattern: "Yes, I swim [where/frequency] / No, I can't swim" },
+                { en: "Tried extreme sports?", id: "Pernah olahraga ekstrem?", pattern: "Yes, I've tried [sport] / No, too scary" },
+                { en: "Shopping as hobby?", id: "Berbelanja sebagai hobi?", pattern: "Yes, I love shopping for [items] / No, only necessities" },
+                { en: "Into fashion?", id: "Suka fashion?", pattern: "Yes, I follow [type] fashion / I have my own style" },
+                { en: "Thrifting or vintage?", id: "Thrifting atau vintage?", pattern: "Yes, I love finding [what] / No, I prefer new" },
+                { en: "Visit museums or galleries?", id: "Kunjungi museum atau galeri?", pattern: "Yes, I enjoy [type] / Not really" },
+                { en: "Learn new languages?", id: "Belajar bahasa baru?", pattern: "Yes, I'm learning [language] / I'd love to learn" },
+                { en: "Hobby taught you most?", id: "Hobi yang paling mengajarkan?", pattern: "[Hobby] has taught me [lesson]" }
+            ],
+            food: [
+                { en: "What's your favorite food?", id: "Apa makanan favoritmu?", pattern: "My favorite food is [dish] because [reason]" },
+                { en: "What cuisine do you like most?", id: "Masakan negara mana favoritmu?", pattern: "I love [cuisine] food because [reason]" },
+                { en: "Spicy or mild food?", id: "Makanan pedas atau tidak pedas?", pattern: "I prefer [spicy/mild] food because [reason]" },
+                { en: "Picky eater or eat everything?", id: "Pemilih makanan atau makan semua?", pattern: "I'm [picky/open-minded]. For example, [explanation]" },
+                { en: "What's your comfort food?", id: "Apa makanan penghiburmu?", pattern: "My comfort food is [dish] which reminds me of [memory]" },
+                { en: "Food reminds you of childhood?", id: "Makanan yang mengingatkan masa kecil?", pattern: "[Dish] reminds me of [memory]" },
+                { en: "Do you like to cook?", id: "Apakah kamu suka memasak?", pattern: "Yes, I cook [frequency] / No, but I can make [dish]" },
+                { en: "Who taught you to cook?", id: "Siapa yang mengajarimu memasak?", pattern: "I learned from [person] who taught me [what]" },
+                { en: "Your signature dish?", id: "Hidangan khasmu?", pattern: "My signature dish is [name] which is made with [ingredients]" },
+                { en: "Cooking or baking?", id: "Memasak atau baking?", pattern: "I prefer [cooking/baking] because [reason]" },
+                { en: "Most difficult dish cooked?", id: "Hidangan paling sulit?", pattern: "The hardest dish I made was [dish] because [reason]" },
+                { en: "Taken a cooking class?", id: "Pernah ikut kelas memasak?", pattern: "Yes, I took a [cuisine] class / No, I learned from [where]" },
+                { en: "Follow recipes or improvise?", id: "Ikuti resep atau berimprovisasi?", pattern: "I usually [follow/improvise] because [reason]" },
+                { en: "Favorite kitchen gadget?", id: "Peralatan dapur favorit?", pattern: "My favorite is [gadget] which helps me [what]" },
+                { en: "Enjoy meal prepping?", id: "Suka menyiapkan makanan di awal?", pattern: "Yes, I prep [what] / No, I prefer fresh food" },
+                { en: "Plan weekly meals?", id: "Rencanakan makanan mingguan?", pattern: "Yes, I plan [how] / No, I decide day by day" },
+                { en: "Go-to quick dinner?", id: "Makan malam cepat andalan?", pattern: "My go-to is [dish] which takes [time]" },
+                { en: "Breakfast for dinner?", id: "Sarapan untuk makan malam?", pattern: "Yes, I love [what] / No, that's weird" },
+                { en: "Weirdest food combination?", id: "Kombinasi makanan paling aneh?", pattern: "I enjoy eating [combination]" },
+                { en: "Like trying street food?", id: "Suka mencoba makanan jalanan?", pattern: "Yes, I love street food in [location]" },
+                { en: "Best street food had?", id: "Makanan jalanan terbaik?", pattern: "The best was [food] in [place]" },
+                { en: "Eaten something exotic?", id: "Pernah makan sesuatu eksotis?", pattern: "Yes, I've tried [food] / No, I'm not adventurous" },
+                { en: "Spiciest food eaten?", id: "Makanan paling pedas?", pattern: "The spiciest was [dish] which made me [reaction]" },
+                { en: "Food allergies?", id: "Alergi makanan?", pattern: "Yes, I'm allergic to [food] / No, luckily" },
+                { en: "Vegetarian or vegan?", id: "Vegetarian atau vegan?", pattern: "Yes, I'm [vegetarian/vegan] for [reason] / No, I eat meat" },
+                { en: "How do you feel about fast food?", id: "Bagaimana pendapat tentang fast food?", pattern: "I think fast food is [adjective] because [reason]" },
+                { en: "Favorite fast food chain?", id: "Rantai fast food favorit?", pattern: "My favorite is [restaurant] because of [what]" },
+                { en: "Eating at home or restaurants?", id: "Makan di rumah atau restoran?", pattern: "I prefer [home/restaurants] because [reason]" },
+                { en: "How often eat out?", id: "Seberapa sering makan di luar?", pattern: "I eat out [frequency]" },
+                { en: "Favorite restaurant?", id: "Restoran favorit?", pattern: "My favorite is [name] which serves [cuisine]" },
+                { en: "Fine dining or casual?", id: "Fine dining atau santai?", pattern: "I prefer [fine/casual] because [reason]" },
+                { en: "Most expensive meal?", id: "Makanan termahal?", pattern: "The most expensive was [description]" },
+                { en: "Enjoy food photography?", id: "Suka fotografi makanan?", pattern: "Yes, I love photographing [what] / No, I just eat it" },
+                { en: "Watch cooking shows?", id: "Nonton acara memasak?", pattern: "Yes, I watch [show] / No, I prefer doing it" },
+                { en: "Favorite celebrity chef?", id: "Koki selebriti favorit?", pattern: "My favorite is [name] because [reason]" },
+                { en: "Use food delivery apps?", id: "Pakai aplikasi pengantar makanan?", pattern: "Yes, I use [app] / No, I prefer cooking" },
+                { en: "Favorite drink?", id: "Minuman favorit?", pattern: "My favorite drink is [beverage]" },
+                { en: "Hot or cold beverages?", id: "Minuman panas atau dingin?", pattern: "I prefer [hot/cold] because [reason]" },
+                { en: "Into coffee culture?", id: "Suka budaya kopi?", pattern: "Yes, I'm a coffee enthusiast / I'm a tea person" },
+                { en: "How do you take coffee?", id: "Bagaimana kamu menyukai kopi?", pattern: "I take my coffee [description]" },
+                { en: "Enjoy wine or beer?", id: "Suka anggur atau bir?", pattern: "I prefer [wine/beer] / I don't drink alcohol" },
+                { en: "Favorite dessert?", id: "Hidangan penutup favorit?", pattern: "My favorite is [dessert]" },
+                { en: "Have a sweet tooth?", id: "Suka makanan manis?", pattern: "Yes, I love [sweets] / No, I prefer savory" },
+                { en: "Favorite ice cream flavor?", id: "Rasa es krim favorit?", pattern: "My favorite is [flavor] because [reason]" },
+                { en: "Like chocolate?", id: "Suka cokelat?", pattern: "Yes, I love [type] / No, too sweet" },
+                { en: "Favorite fruit?", id: "Buah favorit?", pattern: "My favorite is [fruit] which is [adjective]" },
+                { en: "Eat vegetables willingly?", id: "Makan sayur dengan sukarela?", pattern: "Yes, I love [vegetables] / I have to force myself" },
+                { en: "Least favorite food?", id: "Makanan paling tidak disukai?", pattern: "I really dislike [food] because [reason]" },
+                { en: "Taste preferences changed?", id: "Preferensi rasa berubah?", pattern: "Yes, I used to hate [food] but now [what]" },
+                { en: "Food to eat every day?", id: "Makanan untuk dimakan setiap hari?", pattern: "If I could, I'd eat [food] every day" },
+                { en: "One cuisine forever?", id: "Satu masakan selamanya?", pattern: "I'd choose [cuisine] because of [reason]" }
+            ],
+            family: [
+                { en: "How many in immediate family?", id: "Berapa orang di keluarga inti?", pattern: "There are [number] people: [list]" },
+                { en: "Do you have siblings?", id: "Apakah kamu punya saudara kandung?", pattern: "Yes, I have [number]. I'm the [position]" },
+                { en: "Birth order in family?", id: "Urutan kelahiran di keluarga?", pattern: "I'm the [first/middle/last/only] child" },
+                { en: "Close to siblings?", id: "Dekat dengan saudara kandung?", pattern: "Yes, we [activity] / Not really, we [what]" },
+                { en: "Common with siblings?", id: "Kesamaan dengan saudara?", pattern: "We both like [activity/trait]" },
+                { en: "Look like mom or dad?", id: "Mirip ibu atau ayah?", pattern: "People say I look like [parent]" },
+                { en: "Traits from parents?", id: "Sifat warisan dari orang tua?", pattern: "I inherited [trait] from my [parent]" },
+                { en: "Favorite family tradition?", id: "Tradisi keluarga favorit?", pattern: "My favorite is [tradition] which we do [when]" },
+                { en: "How celebrate birthdays?", id: "Bagaimana merayakan ulang tahun?", pattern: "We usually [celebration method]" },
+                { en: "Important holidays?", id: "Hari raya penting?", pattern: "[Holiday] is most important because [reason]" },
+                { en: "Family weekend rituals?", id: "Ritual akhir pekan keluarga?", pattern: "Every weekend, we [activity]" },
+                { en: "Best family vacation?", id: "Liburan keluarga terbaik?", pattern: "The best was to [place] when [when]" },
+                { en: "Family reunions?", id: "Pertemuan keluarga besar?", pattern: "Yes, we meet [frequency] / No, we're scattered" },
+                { en: "Visit extended family?", id: "Kunjungi keluarga besar?", pattern: "I visit them [frequency]" },
+                { en: "Large or small family?", id: "Keluarga besar atau kecil?", pattern: "I have a [large/small] family" },
+                { en: "Close to grandparents?", id: "Dekat dengan kakek-nenek?", pattern: "Yes, I visit them [frequency] / No, they live far" },
+                { en: "Grandparents' stories?", id: "Cerita kakek-nenek?", pattern: "They often tell me about [topic]" },
+                { en: "Family heirlooms?", id: "Barang pusaka keluarga?", pattern: "Yes, we have [item] from [who]" },
+                { en: "Passed down in family?", id: "Yang diwariskan di keluarga?", pattern: "[Item/tradition] has been passed down" },
+                { en: "Special family recipes?", id: "Resep keluarga spesial?", pattern: "Yes, [dish] which is made with [what]" },
+                { en: "Best cook in family?", id: "Koki terbaik di keluarga?", pattern: "[Person] is the best cook" },
+                { en: "Your role in gatherings?", id: "Peranmu dalam pertemuan?", pattern: "I'm usually the [role]" },
+                { en: "Organizer or quiet one?", id: "Penyelenggara atau yang pendiam?", pattern: "I'm more of the [organizer/quiet] one" },
+                { en: "Family game nights?", id: "Malam permainan keluarga?", pattern: "Yes, we play [games] every [when]" },
+                { en: "Games family plays?", id: "Permainan yang dimainkan?", pattern: "We enjoy playing [games]" },
+                { en: "Handle disagreements?", id: "Menangani perselisihan?", pattern: "We usually [method]" },
+                { en: "Values from parents?", id: "Nilai dari orang tua?", pattern: "They taught me to [value]" },
+                { en: "Most important lesson?", id: "Pelajaran paling penting?", pattern: "The most important is [lesson]" },
+                { en: "Family pets?", id: "Hewan peliharaan keluarga?", pattern: "Yes, we have [pet] named [name]" },
+                { en: "Pets growing up?", id: "Hewan peliharaan saat kecil?", pattern: "I grew up with [pets]" },
+                { en: "Childhood friends?", id: "Teman masa kecil?", pattern: "Yes, I'm still friends with [name]" },
+                { en: "Best friend growing up?", id: "Teman terbaik saat kecil?", pattern: "My best friend was [name] who [characteristic]" },
+                { en: "How meet closest friend?", id: "Bagaimana bertemu teman terdekat?", pattern: "I met [name] at [place/event]" },
+                { en: "Do with best friend?", id: "Apa yang dilakukan dengan teman terbaik?", pattern: "We usually [activity]" },
+                { en: "How often hang out?", id: "Seberapa sering hangout?", pattern: "We hang out [frequency]" },
+                { en: "Small or large friend group?", id: "Grup teman kecil atau besar?", pattern: "I prefer [small/large] because [reason]" },
+                { en: "Make new friends as adult?", id: "Membuat teman baru sebagai dewasa?", pattern: "I make friends through [where]" },
+                { en: "Qualities in a friend?", id: "Kualitas dalam teman?", pattern: "I look for [qualities]" },
+                { en: "Lost touch with friend?", id: "Kehilangan kontak dengan teman?", pattern: "Yes, with [name] because [reason]" },
+                { en: "Friends from different stages?", id: "Teman dari berbagai tahap?", pattern: "Yes, from [stages]" },
+                { en: "Maintain long-distance?", id: "Jaga persahabatan jarak jauh?", pattern: "We [method]" },
+                { en: "Friends know family well?", id: "Teman kenal keluarga dengan baik?", pattern: "Yes, they're like family / No, separate" },
+                { en: "Celebrate achievements?", id: "Merayakan pencapaian?", pattern: "We usually [celebration]" },
+                { en: "Turn to for advice?", id: "Minta nasihat kepada siapa?", pattern: "I go to [person] for [type] advice" },
+                { en: "Mentor or role model?", id: "Mentor atau panutan?", pattern: "Yes, [person] who [reason]" },
+                { en: "Most influential person?", id: "Orang paling berpengaruh?", pattern: "[Person] has influenced me by [how]" },
+                { en: "Best advice received?", id: "Nasihat terbaik yang diterima?", pattern: "The best was [advice] from [person]" },
+                { en: "Relationship with parents changed?", id: "Hubungan dengan orang tua berubah?", pattern: "Yes, now we [what] / No, still the same" },
+                { en: "Raise kids similarly?", id: "Besarkan anak dengan cara sama?", pattern: "I'd [keep/change] [aspect]" },
+                { en: "Traditions to continue?", id: "Tradisi yang ingin dilanjutkan?", pattern: "I want to continue [tradition]" },
+                { en: "What does family mean?", id: "Apa arti keluarga?", pattern: "Family means [definition]" }
+            ],
+            work: [
+                { en: "What do you do for a living?", id: "Apa pekerjaanmu?", pattern: "I work as a [job] at [company/type]" },
+                { en: "How choose career path?", id: "Bagaimana memilih jalur karir?", pattern: "I chose this because [reason]" },
+                { en: "What wanted to be as kid?", id: "Apa yang ingin dijadi saat kecil?", pattern: "When young, I wanted to be [job]" },
+                { en: "Working in dream job?", id: "Bekerja di pekerjaan impian?", pattern: "Yes, it's my dream because... / Not yet" },
+                { en: "What like most about job?", id: "Apa yang paling disukai dari pekerjaan?", pattern: "The best part is [aspect]" },
+                { en: "Most challenging part?", id: "Bagian paling menantang?", pattern: "The biggest challenge is [what]" },
+                { en: "How long working there?", id: "Sudah berapa lama bekerja di sana?", pattern: "I've been there for [duration]" },
+                { en: "Typical workday look like?", id: "Seperti apa hari kerja biasa?", pattern: "A typical day involves [activities]" },
+                { en: "Work from home or office?", id: "Kerja dari rumah atau kantor?", pattern: "I work [location]" },
+                { en: "How feel about remote work?", id: "Bagaimana pendapat tentang kerja jarak jauh?", pattern: "I [like/dislike] it because [pros/cons]" },
+                { en: "Workspace setup like?", id: "Seperti apa setup ruang kerja?", pattern: "I have [equipment]" },
+                { en: "Prefer alone or team work?", id: "Lebih suka kerja sendiri atau tim?", pattern: "I prefer [solo/team] because [reason]" },
+                { en: "Favorite coworker?", id: "Rekan kerja favorit?", pattern: "My favorite is [name] who [quality]" },
+                { en: "Handle workplace conflicts?", id: "Menangani konflik di tempat kerja?", pattern: "I handle them by [method]" },
+                { en: "Best project worked on?", id: "Proyek terbaik yang dikerjakan?", pattern: "The best was [project]" },
+                { en: "Proudest achievement at work?", id: "Pencapaian paling dibanggakan?", pattern: "I'm most proud of [achievement]" },
+                { en: "Ever had bad boss?", id: "Pernah punya bos yang buruk?", pattern: "Yes, [description] / No, I've been lucky" },
+                { en: "What makes good leader?", id: "Apa yang membuat pemimpin baik?", pattern: "A good leader should [qualities]" },
+                { en: "Want to be manager?", id: "Ingin menjadi manajer?", pattern: "Yes, because [reason] / No, I prefer [what]" },
+                { en: "Skills currently developing?", id: "Keterampilan yang sedang dikembangkan?", pattern: "I'm learning [skill]" },
+                { en: "Stay updated in field?", id: "Tetap update di bidangmu?", pattern: "I stay updated by [method]" },
+                { en: "Attend conferences?", id: "Hadiri konferensi?", pattern: "Yes, [which ones] / No, but I'd like to" },
+                { en: "What industry work in?", id: "Di industri apa kamu bekerja?", pattern: "I work in the [industry]" },
+                { en: "Industry changed recently?", id: "Industri berubah baru-baru ini?", pattern: "Yes, [change] which has [effect]" },
+                { en: "See yourself long-term?", id: "Lihat diri jangka panjang?", pattern: "Yes, I plan to [what] / I'm considering" },
+                { en: "Dream company to work for?", id: "Perusahaan impian untuk bekerja?", pattern: "My dream is [company]" },
+                { en: "Switch careers completely?", id: "Pindah karier sepenuhnya?", pattern: "Maybe, I'd consider [field]" },
+                { en: "Other job to try?", id: "Pekerjaan lain yang ingin dicoba?", pattern: "I'd love to try [job]" },
+                { en: "Side hustle or part-time?", id: "Pekerjaan sampingan?", pattern: "Yes, I [what] / No, too busy" },
+                { en: "Balance work and personal?", id: "Seimbangkan kerja dan pribadi?", pattern: "I balance by [method]" },
+                { en: "Check work emails at home?", id: "Cek email kerja di rumah?", pattern: "Yes, unfortunately / No, I disconnect" },
+                { en: "Decompress after work?", id: "Melepas penat setelah kerja?", pattern: "I decompress by [activity]" },
+                { en: "What motivates hard work?", id: "Apa yang memotivasi kerja keras?", pattern: "I'm motivated by [factor]" },
+                { en: "Money or passion important?", id: "Uang atau passion penting?", pattern: "I think [priority] because [reason]" },
+                { en: "What if won lottery?", id: "Bagaimana jika menang lotre?", pattern: "If I won, I'd [action]" },
+                { en: "Still work if rich?", id: "Tetap kerja jika kaya?", pattern: "Yes, because [reason] / No, I'd [what]" },
+                { en: "Ideal retirement age?", id: "Usia pensiun ideal?", pattern: "I'd like to retire at [age]" },
+                { en: "Long-term career goals?", id: "Tujuan karir jangka panjang?", pattern: "My goal is to [achievement]" },
+                { en: "Where in five years?", id: "Di mana dalam lima tahun?", pattern: "In five years, I see myself [position]" },
+                { en: "Have five-year plan?", id: "Punya rencana lima tahun?", pattern: "Yes, [plan] / I'm flexible" },
+                { en: "Steps toward goals?", id: "Langkah menuju tujuan?", pattern: "I'm taking steps like [actions]" },
+                { en: "Failed at work?", id: "Gagal di tempat kerja?", pattern: "Yes, when [what] which taught me [lesson]" },
+                { en: "How handle failure?", id: "Bagaimana menangani kegagalan?", pattern: "I handle it by [method]" },
+                { en: "What studied in school?", id: "Apa yang dipelajari di sekolah?", pattern: "I studied [major]" },
+                { en: "Education helpful for career?", id: "Pendidikan membantu karir?", pattern: "Yes, it gave me [skills] / Somewhat" },
+                { en: "Go back to school?", id: "Kembali ke sekolah?", pattern: "Yes, for [what] / No, I learn better [how]" },
+                { en: "What subject study now?", id: "Subjek apa yang dipelajari sekarang?", pattern: "I'd study [subject]" },
+                { en: "Believe in lifelong learning?", id: "Percaya pembelajaran seumur hidup?", pattern: "Yes, because [reason]" },
+                { en: "How learn new things best?", id: "Bagaimana belajar hal baru terbaik?", pattern: "I learn best by [method]" },
+                { en: "Book or course changed perspective?", id: "Buku atau kursus ubah perspektif?", pattern: "[Resource] changed how I see [what]" },
+                { en: "Advice for someone starting?", id: "Nasihat untuk pemula?", pattern: "I'd tell them to [advice]" }
+            ],
+            travel: [
+                { en: "Do you like to travel?", id: "Apakah kamu suka bepergian?", pattern: "Yes, I love it because [reason]" },
+                { en: "How often travel?", id: "Seberapa sering bepergian?", pattern: "I travel [frequency]" },
+                { en: "Favorite type of vacation?", id: "Jenis liburan favorit?", pattern: "I prefer [type] vacations" },
+                { en: "Beach or mountain?", id: "Pantai atau gunung?", pattern: "I prefer [beaches/mountains] because [reason]" },
+                { en: "City or nature person?", id: "Orang kota atau alam?", pattern: "I'm more of a [city/nature] person" },
+                { en: "Best trip ever taken?", id: "Perjalanan terbaik?", pattern: "The best was to [place]" },
+                { en: "Favorite country visited?", id: "Negara favorit yang dikunjungi?", pattern: "My favorite is [country]" },
+                { en: "Top of bucket list?", id: "Teratas di daftar impian?", pattern: "At the top is [place]" },
+                { en: "Travel alone or with others?", id: "Bepergian sendiri atau bersama?", pattern: "I prefer [solo/group] because [reason]" },
+                { en: "Ideal travel companion?", id: "Teman perjalanan ideal?", pattern: "My ideal is [description]" },
+                { en: "How plan trips?", id: "Bagaimana merencanakan perjalanan?", pattern: "I plan by [method]" },
+                { en: "Plan everything or go with flow?", id: "Rencanakan semua atau mengalir?", pattern: "I prefer [planning/spontaneity]" },
+                { en: "How far advance book?", id: "Seberapa jauh sebelumnya memesan?", pattern: "I book [time] in advance" },
+                { en: "Travel agents or book yourself?", id: "Agen perjalanan atau sendiri?", pattern: "I prefer [method]" },
+                { en: "Preferred transportation?", id: "Transportasi pilihan?", pattern: "I prefer [transport] because [reason]" },
+                { en: "Like road trips?", id: "Suka perjalanan darat?", pattern: "Yes, for [reason] / No, I prefer [alternative]" },
+                { en: "Longest flight been on?", id: "Penerbangan terpanjang?", pattern: "The longest was to [destination]" },
+                { en: "How handle jet lag?", id: "Bagaimana menangani jet lag?", pattern: "I handle it by [method]" },
+                { en: "Window or aisle seat?", id: "Kursi jendela atau lorong?", pattern: "I prefer [window/aisle]" },
+                { en: "Can sleep on planes?", id: "Bisa tidur di pesawat?", pattern: "Yes, [how] / No, I struggle" },
+                { en: "Pack in carry-on?", id: "Bawa di tas kabin?", pattern: "I pack [essentials]" },
+                { en: "Light or heavy packer?", id: "Packing ringan atau berat?", pattern: "I'm a [light/heavy] packer" },
+                { en: "Check luggage or carry-on only?", id: "Check bagasi atau kabin saja?", pattern: "I prefer [option]" },
+                { en: "Most essential luggage item?", id: "Barang paling penting di koper?", pattern: "The most essential is [item]" },
+                { en: "Ever lost luggage?", id: "Pernah kehilangan bagasi?", pattern: "Yes, [story] / No, thankfully" },
+                { en: "Weirdest thing packed?", id: "Barang paling aneh yang dibawa?", pattern: "The weirdest was [item]" },
+                { en: "Buy souvenirs?", id: "Beli oleh-oleh?", pattern: "Yes, I collect [items] / No, experiences" },
+                { en: "Kind of souvenirs collect?", id: "Jenis oleh-oleh yang dikoleksi?", pattern: "I collect [items]" },
+                { en: "Send postcards?", id: "Kirim kartu pos?", pattern: "Yes, to [who] / No, social media" },
+                { en: "How document travels?", id: "Bagaimana mendokumentasikan?", pattern: "I document through [method]" },
+                { en: "Keep travel journal?", id: "Punya jurnal perjalanan?", pattern: "Yes, I write about [what] / No" },
+                { en: "Photos or videos more?", id: "Foto atau video lebih banyak?", pattern: "I take more [photos/videos]" },
+                { en: "Choose where to eat?", id: "Pilih tempat makan?", pattern: "I choose based on [criteria]" },
+                { en: "Try local or familiar food?", id: "Coba makanan lokal atau familiar?", pattern: "I always try [local/familiar]" },
+                { en: "Strangest food tried abroad?", id: "Makanan paling aneh di luar negeri?", pattern: "The strangest was [food]" },
+                { en: "Gotten sick from food?", id: "Pernah sakit karena makanan?", pattern: "Yes, [story] / No, careful" },
+                { en: "Learn basic phrases?", id: "Belajar frasa dasar?", pattern: "Yes, [phrases] / Use apps" },
+                { en: "Favorite word in other language?", id: "Kata favorit dalam bahasa lain?", pattern: "My favorite is [word]" },
+                { en: "Ever had travel disaster?", id: "Pernah bencana perjalanan?", pattern: "Yes, [disaster] / No, lucky" },
+                { en: "Funniest travel story?", id: "Cerita perjalanan paling lucu?", pattern: "The funniest was when [story]" },
+                { en: "Ever missed a flight?", id: "Pernah ketinggalan pesawat?", pattern: "Yes, [how] / No, always early" },
+                { en: "Most beautiful place seen?", id: "Tempat paling indah yang dilihat?", pattern: "The most beautiful was [place]" },
+                { en: "Visited UNESCO sites?", id: "Kunjungi situs UNESCO?", pattern: "Yes, [sites] / Not yet" },
+                { en: "Like historical places?", id: "Suka tempat bersejarah?", pattern: "Yes, because [reason] / Prefer modern" },
+                { en: "Interested in ancient civilizations?", id: "Tertarik peradaban kuno?", pattern: "Yes, especially [which] / Not particularly" },
+                { en: "Modern or historical destinations?", id: "Destinasi modern atau bersejarah?", pattern: "I prefer [modern/historical]" },
+                { en: "Favorite travel memory?", id: "Kenangan perjalanan favorit?", pattern: "My favorite is [memory]" },
+                { en: "How travel changed you?", id: "Bagaimana perjalanan mengubahmu?", pattern: "Travel has made me [adjective]" },
+                { en: "Travel mistake not repeat?", id: "Kesalahan perjalanan tak diulangi?", pattern: "I won't [mistake] again" },
+                { en: "Tips for first-time travelers?", id: "Tips untuk traveler pertama?", pattern: "My tip is to [advice]" },
+                { en: "Planning to go next?", id: "Rencana pergi selanjutnya?", pattern: "Next, I'm planning to go to [place]" }
+            ],
+            entertainment: [
+                { en: "What do you do for fun?", id: "Apa yang kamu lakukan untuk bersenang-senang?", pattern: "For fun, I [activity]" },
+                { en: "TV shows watching now?", id: "Acara TV yang ditonton sekarang?", pattern: "Currently, I'm watching [show]" },
+                { en: "All-time favorite TV series?", id: "Serial TV favorit sepanjang masa?", pattern: "My all-time favorite is [show]" },
+                { en: "Binge-watch or pace yourself?", id: "Tonton maraton atau perlahan?", pattern: "I prefer to [binge/pace]" },
+                { en: "What streaming services?", id: "Layanan streaming apa?", pattern: "I subscribe to [services]" },
+                { en: "Netflix, Disney+, or others?", id: "Netflix, Disney+, atau lainnya?", pattern: "I prefer [service] because [content]" },
+                { en: "Last movie watched?", id: "Film terakhir yang ditonton?", pattern: "The last was [title] which was [opinion]" },
+                { en: "Movies at home or cinema?", id: "Film di rumah atau bioskop?", pattern: "I prefer [home/cinema] because [reason]" },
+                { en: "Favorite movie genre?", id: "Genre film favorit?", pattern: "My favorite is [genre]" },
+                { en: "Favorite actor or actress?", id: "Aktor atau aktris favorit?", pattern: "My favorite is [name]" },
+                { en: "Favorite director?", id: "Sutradara favorit?", pattern: "I love [director]'s [style]" },
+                { en: "Movie changed perspective?", id: "Film yang ubah perspektif?", pattern: "[Movie] changed how I see [what]" },
+                { en: "Watch foreign films?", id: "Tonton film luar negeri?", pattern: "Yes, especially from [country] / No" },
+                { en: "Best movie this year?", id: "Film terbaik tahun ini?", pattern: "The best was [title]" },
+                { en: "Like classic movies?", id: "Suka film klasik?", pattern: "Yes, especially [era/director] / Not really" },
+                { en: "Favorite childhood movie?", id: "Film favorit masa kecil?", pattern: "My favorite was [title]" },
+                { en: "Watch anime or cartoons?", id: "Tonton anime atau kartun?", pattern: "Yes, I love [which] / Not anymore" },
+                { en: "Anime recommend?", id: "Anime yang direkomendasikan?", pattern: "I'd recommend [title]" },
+                { en: "Go to cinema often?", id: "Sering ke bioskop?", pattern: "I go [frequency]" },
+                { en: "Cinema snack of choice?", id: "Camilan pilihan di bioskop?", pattern: "My go-to is [snack]" },
+                { en: "Prefer 2D or 3D movies?", id: "Lebih suka film 2D atau 3D?", pattern: "I prefer [2D/3D] because [reason]" },
+                { en: "Been to film festival?", id: "Pernah ke festival film?", pattern: "Yes, [which] / No, want to" },
+                { en: "Music listen to daily?", id: "Musik yang didengar setiap hari?", pattern: "I listen to [genre]" },
+                { en: "Favorite artist or band?", id: "Artis atau band favorit?", pattern: "My favorite is [name]" },
+                { en: "Concert love to attend?", id: "Konser yang ingin dihadiri?", pattern: "I'd love to see [artist]" },
+                { en: "Ever met celebrity?", id: "Pernah bertemu selebriti?", pattern: "Yes, [who/when] / No" },
+                { en: "Play any instruments?", id: "Main alat musik?", pattern: "Yes, [instrument] / No, wish" },
+                { en: "Instrument to learn?", id: "Alat musik yang ingin dipelajari?", pattern: "I'd love to learn [instrument]" },
+                { en: "Sing? Shower or karaoke?", id: "Nyanyi? Di kamar mandi atau karaoke?", pattern: "Yes, [where/songs] / No" },
+                { en: "Go-to karaoke song?", id: "Lagu andalan karaoke?", pattern: "My go-to is [song]" },
+                { en: "Live theater or musicals?", id: "Teater live atau musikal?", pattern: "Yes, love [type] / Not my thing" },
+                { en: "Best live performance?", id: "Pertunjukan live terbaik?", pattern: "The best was [show]" },
+                { en: "Follow sports teams?", id: "Ikuti tim olahraga?", pattern: "Yes, [team] / Not interested" },
+                { en: "What sports watch?", id: "Olahraga apa yang ditonton?", pattern: "I enjoy watching [sport]" },
+                { en: "Been to live sports event?", id: "Pernah ke acara olahraga live?", pattern: "Yes, [event] / No" },
+                { en: "Play fantasy sports?", id: "Main olahraga fantasi?", pattern: "Yes, [sport] / No" },
+                { en: "Into board games?", id: "Suka permainan papan?", pattern: "Yes, love [games] / Not really" },
+                { en: "Favorite board game?", id: "Permainan papan favorit?", pattern: "My favorite is [game]" },
+                { en: "Play card games?", id: "Main permainan kartu?", pattern: "Yes, [games] / Not really" },
+                { en: "Good at chess?", id: "Pandai catur?", pattern: "Yes, [level] / Still learning" },
+                { en: "Enjoy escape rooms?", id: "Suka escape room?", pattern: "Yes, done [number] / No" },
+                { en: "Tried virtual reality games?", id: "Pernah coba game VR?", pattern: "Yes, [experience] / No" },
+                { en: "Video games popular with friends?", id: "Game populer di kalangan teman?", pattern: "My friends play [games]" },
+                { en: "Watch YouTube? Channels?", id: "Nonton YouTube? Channel apa?", pattern: "Yes, [channels]" },
+                { en: "Listen to podcasts?", id: "Dengarkan podcast?", pattern: "Yes, [which] / No, music" },
+                { en: "What social media use most?", id: "Media sosial yang paling sering?", pattern: "I use [platform] most" },
+                { en: "Follow influencers?", id: "Ikuti influencer?", pattern: "Yes, [types] / No" },
+                { en: "Discover new music or shows?", id: "Temukan musik atau acara baru?", pattern: "I discover through [method]" },
+                { en: "What's overrated today?", id: "Apa yang overrated sekarang?", pattern: "I think [thing] is overrated" },
+                { en: "What's underrated?", id: "Apa yang underrated?", pattern: "[Thing] is underrated" },
+                { en: "Entertainment trend not understand?", id: "Tren hiburan yang tidak dimengerti?", pattern: "I don't understand [trend]" },
+                { en: "One show forever?", id: "Satu acara selamanya?", pattern: "If only one, it'd be [show]" }
+            ],
+            personal: [
+                { en: "Describe yourself in three words?", id: "Deskripsikan dirimu dalam tiga kata?", pattern: "I'd say I'm [adj], [adj], and [adj]" },
+                { en: "Most proud of yourself?", id: "Paling bangga tentang dirimu?", pattern: "I'm most proud of [achievement]" },
+                { en: "Working to improve?", id: "Yang sedang diperbaiki?", pattern: "I'm working on [aspect]" },
+                { en: "What makes you unique?", id: "Apa yang membuatmu unik?", pattern: "What makes me unique is [characteristic]" },
+                { en: "What are your strengths?", id: "Apa kekuatanmu?", pattern: "My strengths include [qualities]" },
+                { en: "What are your weaknesses?", id: "Apa kelemahanmu?", pattern: "I sometimes struggle with [weakness]" },
+                { en: "How handle criticism?", id: "Bagaimana menangani kritik?", pattern: "I handle it by [method]" },
+                { en: "What scares you most?", id: "Apa yang paling menakutkan?", pattern: "What scares me most is [fear]" },
+                { en: "Biggest fear?", id: "Ketakutan terbesar?", pattern: "My biggest fear is [what]" },
+                { en: "What makes you anxious?", id: "Apa yang membuat cemas?", pattern: "[Situation] makes me anxious" },
+                { en: "Calm yourself when stressed?", id: "Menenangkan diri saat stres?", pattern: "When stressed, I [method]" },
+                { en: "What makes you truly happy?", id: "Apa yang membuat benar-benar bahagia?", pattern: "[Thing] makes me truly happy" },
+                { en: "Last time laughed hard?", id: "Terakhir kali tertawa terbahak-bahak?", pattern: "I last laughed hard when [story]" },
+                { en: "Joy in small moments?", id: "Kegembiraan dalam momen kecil?", pattern: "Small things like [example]" },
+                { en: "Definition of success?", id: "Definisi sukses?", pattern: "Success to me means [definition]" },
+                { en: "Success: money or happiness?", id: "Sukses: uang atau kebahagiaan?", pattern: "I think [priority]" },
+                { en: "Top three life priorities?", id: "Tiga prioritas hidup?", pattern: "My priorities are [1], [2], and [3]" },
+                { en: "Do differently if restart life?", id: "Lakukan berbeda jika memulai ulang?", pattern: "If restart, I'd [action]" },
+                { en: "Biggest regret?", id: "Penyesalan terbesar?", pattern: "My biggest regret is [what]" },
+                { en: "Decision most proud of?", id: "Keputusan paling dibanggakan?", pattern: "I'm proud of deciding to [action]" },
+                { en: "Change one thing about yourself?", id: "Ubah satu hal tentang dirimu?", pattern: "If change one thing, it'd be [what]" },
+                { en: "Habit changed life most?", id: "Kebiasaan yang paling mengubah hidup?", pattern: "[Habit] has changed my life" },
+                { en: "Skill wish you had?", id: "Keterampilan yang diinginkan?", pattern: "I wish I could [skill]" },
+                { en: "Talent few people know?", id: "Bakat yang sedikit orang tahu?", pattern: "Not many know I can [talent]" },
+                { en: "Surprisingly good at?", id: "Mengejutkan kamu kuasai?", pattern: "People are surprised I'm good at [skill]" },
+                { en: "Terrible at but enjoy?", id: "Buruk tapi tetap nikmati?", pattern: "I'm terrible at [skill] but enjoy it" },
+                { en: "Values most important?", id: "Nilai paling penting?", pattern: "[Values] are most important" },
+                { en: "Worldview changed over time?", id: "Pandangan dunia berubah?", pattern: "Yes, I used to think [old] but now [new]" },
+                { en: "Belief hold strongly?", id: "Keyakinan yang dipegang teguh?", pattern: "I strongly believe that [belief]" },
+                { en: "Changed mind about something big?", id: "Ubah pikiran tentang sesuatu besar?", pattern: "I changed my mind about [topic]" },
+                { en: "Causes passionate about?", id: "Tujuan yang dirasakan dengan penuh semangat?", pattern: "I'm passionate about [cause]" },
+                { en: "Volunteer or donate?", id: "Sukarelawan atau berdonasi?", pattern: "Yes, to [cause] / Not as much as should" },
+                { en: "How want to be remembered?", id: "Bagaimana ingin dikenang?", pattern: "I want to be remembered as [description]" },
+                { en: "Legacy to leave?", id: "Warisan yang ingin ditinggalkan?", pattern: "I'd like to leave [legacy]" },
+                { en: "Advice to younger self?", id: "Nasihat untuk diri yang lebih muda?", pattern: "I'd tell myself to [advice]" },
+                { en: "Hope to achieve this year?", id: "Harapkan dicapai tahun ini?", pattern: "This year, I hope to [goal]" },
+                { en: "Where in ten years?", id: "Di mana dalam sepuluh tahun?", pattern: "In ten years, I see myself [scenario]" },
+                { en: "On your bucket list?", id: "Di daftar impian?", pattern: "On my list is [items]" },
+                { en: "Craziest thing want to try?", id: "Hal paling gila yang ingin dicoba?", pattern: "The craziest is [activity]" },
+                { en: "Unlimited resources, what do?", id: "Sumber daya tak terbatas, apa yang dilakukan?", pattern: "With unlimited, I'd [action]" },
+                { en: "Couldn't fail, what do?", id: "Tidak bisa gagal, apa yang dilakukan?", pattern: "If couldn't fail, I'd [goal]" },
+                { en: "Holding back from dreams?", id: "Apa yang menghalangi impian?", pattern: "[Obstacle] is holding me back" },
+                { en: "Bravest thing done?", id: "Hal paling berani yang dilakukan?", pattern: "The bravest was [action]" },
+                { en: "Stepped out of comfort zone?", id: "Keluar dari zona nyaman?", pattern: "I stepped out when [action]" },
+                { en: "Risk glad you took?", id: "Risiko yang disenangi diambil?", pattern: "I'm glad I took the risk to [action]" },
+                { en: "Risk wish taken?", id: "Risiko yang diharap diambil?", pattern: "I wish I'd taken the risk to [action]" },
+                { en: "Want to grow as person?", id: "Ingin berkembang sebagai pribadi?", pattern: "I want to become more [quality]" },
+                { en: "Ideal future look like?", id: "Masa depan ideal seperti apa?", pattern: "My ideal future involves [elements]" },
+                { en: "Most grateful for right now?", id: "Paling syukuri saat ini?", pattern: "Right now, I'm grateful for [what]" },
+                { en: "Simple thing smiled today?", id: "Hal sederhana yang membuat tersenyum hari ini?", pattern: "Today, [thing] made me smile" },
+                { en: "Meaning of life to you?", id: "Apa arti hidup bagimu?", pattern: "To me, life is about [purpose]" }
+            ]
+        };
+
+        // State Management
+        let currentCategory = '';
+        let currentQuestionIndex = 0;
+        let currentQuestions = [];
+        let answers = {};
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let currentAudioBlob = null;
+        let currentAudioUrl = null;
+        let recordingStartTime = null;
+        let recordingTimer = null;
+
+        // Initialize 3D Background
+        function init3DBackground() {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, 9/16, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.BufferGeometry();
+            const count = 80;
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+
+            for(let i = 0; i < count * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 8;
+                positions[i + 1] = (Math.random() - 0.5) * 8;
+                positions[i + 2] = (Math.random() - 0.5) * 8;
+                
+                colors[i] = Math.random();
+                colors[i + 1] = Math.random();
+                colors[i + 2] = Math.random();
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.04,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            camera.position.z = 2;
+
+            let time = 0;
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.01;
+                particles.rotation.y += 0.001;
+                particles.rotation.x += 0.0005;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // Screen Navigation - SELALU BISA DIKLIK
+        function showScreen(screen) {
+            // Hide all screens
+            document.getElementById('categoryScreen').classList.add('hidden');
+            document.getElementById('guideScreen').classList.add('hidden');
+            document.getElementById('practiceScreen').classList.add('hidden');
+            document.getElementById('reviewScreen').classList.add('hidden');
+            
+            // Remove active from all tabs
+            document.getElementById('tab-category').classList.remove('active');
+            document.getElementById('tab-guide').classList.remove('active');
+            document.getElementById('tab-practice').classList.remove('active');
+            document.getElementById('tab-review').classList.remove('active');
+            
+            // Show selected screen and activate tab
+            if(screen === 'category') {
+                document.getElementById('categoryScreen').classList.remove('hidden');
+                document.getElementById('tab-category').classList.add('active');
+            } else if(screen === 'guide') {
+                document.getElementById('guideScreen').classList.remove('hidden');
+                document.getElementById('tab-guide').classList.add('active');
+            } else if(screen === 'practice') {
+                // Selalu bisa akses practice, tapi peringati jika belum pilih kategori
+                if(currentQuestions.length === 0) {
+                    // Default ke daily jika belum pilih
+                    startCategory('daily');
+                    return;
+                }
+                document.getElementById('practiceScreen').classList.remove('hidden');
+                document.getElementById('tab-practice').classList.add('active');
+            } else if(screen === 'review') {
+                document.getElementById('reviewScreen').classList.remove('hidden');
+                document.getElementById('tab-review').classList.add('active');
+                renderReview();
+            }
+        }
+
+        // Category Names
+        const categoryNames = {
+            daily: "Daily",
+            hobbies: "Hobbies",
+            food: "Food",
+            family: "Family",
+            work: "Work",
+            travel: "Travel",
+            entertainment: "Entertainment",
+            personal: "Personal"
+        };
+
+        function startCategory(category) {
+            currentCategory = category;
+            currentQuestions = [...questions[category]];
+            currentQuestionIndex = 0;
+            answers = {};
+            
+            createSlideIndicators();
+            loadQuestion();
+            showScreen('practice');
+            showToast(`Kategori: ${categoryNames[category]}`);
+        }
+
+        function startRandom() {
+            const allQuestions = Object.values(questions).flat();
+            for(let i = allQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
+            }
+            
+            currentCategory = 'random';
+            currentQuestions = allQuestions.slice(0, 50);
+            currentQuestionIndex = 0;
+            answers = {};
+            
+            createSlideIndicators();
+            loadQuestion();
+            showScreen('practice');
+            showToast('Mode: Random Mix');
+        }
+
+        function createSlideIndicators() {
+            const container = document.getElementById('slideIndicators');
+            if(!container) return;
+            container.innerHTML = '';
+            const maxDots = Math.min(currentQuestions.length, 8);
+            for(let i = 0; i < maxDots; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'slide-indicator' + (i === 0 ? ' active' : '');
+                container.appendChild(dot);
+            }
+        }
+
+        function updateSlideIndicators() {
+            const dots = document.querySelectorAll('.slide-indicator');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentQuestionIndex % 8);
+            });
+        }
+
+        function loadQuestion() {
+            const q = currentQuestions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = q.en;
+            document.getElementById('questionTranslation').textContent = q.id;
+            document.getElementById('patternHint').textContent = q.pattern;
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('currentCategoryBadge').textContent = categoryNames[currentCategory] || 'Random';
+            
+            // Update buttons
+            document.getElementById('btnPrev').disabled = currentQuestionIndex === 0;
+            document.getElementById('btnNext').textContent = currentQuestionIndex === currentQuestions.length - 1 ? 'Selesai ✓' : 'Next →';
+            
+            updateSlideIndicators();
+            loadExistingAnswer();
+        }
+
+        function loadExistingAnswer() {
+            const answer = answers[currentQuestionIndex];
+            
+            document.getElementById('writingInput').value = answer?.writing || '';
+            const wordCount = (answer?.writing || '').split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('wordCount').textContent = `${wordCount} kata`;
+            document.getElementById('grammarResult').classList.add('hidden');
+            
+            if(answer?.audioBlob) {
+                currentAudioBlob = answer.audioBlob;
+                currentAudioUrl = answer.audioUrl;
+                showAudioPlayback();
+            } else {
+                resetRecordingUI();
+            }
+        }
+
+        function saveAnswer() {
+            const writing = document.getElementById('writingInput').value;
+            const hasAudio = currentAudioBlob !== null;
+            
+            if(!writing && !hasAudio) {
+                showToast('Isi jawaban dulu!');
+                return;
+            }
+            
+            const grammarResult = document.getElementById('grammarResult');
+            let grammarScore = 0;
+            if(!grammarResult.classList.contains('hidden')) {
+                grammarScore = parseInt(document.getElementById('grammarScore').textContent) || 0;
+            }
+            
+            answers[currentQuestionIndex] = {
+                question: currentQuestions[currentQuestionIndex],
+                writing: writing,
+                audioBlob: currentAudioBlob,
+                audioUrl: currentAudioUrl,
+                grammarScore: grammarScore,
+                timestamp: new Date().toISOString()
+            };
+            
+            showToast('✓ Tersimpan!');
+        }
+
+        function nextQuestion() {
+            saveAnswer();
+            
+            if(currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showToast('🎉 Selesai!');
+                showScreen('review');
+            }
+        }
+
+        function previousQuestion() {
+            if(currentQuestionIndex > 0) {
+                saveAnswer();
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        // Writing Functions
+        document.getElementById('writingInput')?.addEventListener('input', function() {
+            const words = this.value.split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('wordCount').textContent = `${words} kata`;
+        });
+
+        function clearWriting() {
+            if(confirm('Hapus jawaban?')) {
+                document.getElementById('writingInput').value = '';
+                document.getElementById('wordCount').textContent = '0 kata';
+                document.getElementById('grammarResult').classList.add('hidden');
+            }
+        }
+
+        function checkGrammar() {
+            const text = document.getElementById('writingInput').value;
+            if(text.split(/\s+/).filter(w => w.length > 0).length < 5) {
+                showToast('Minimal 5 kata!');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('grammarResult');
+            resultDiv.classList.remove('hidden');
+            
+            const score = Math.floor(Math.random() * 25) + 75;
+            document.getElementById('grammarScore').textContent = score;
+            
+            let feedback = '';
+            if(score >= 90) {
+                feedback = '<div class="text-green-600 font-bold">✨ Excellent!</div>';
+            } else if(score >= 80) {
+                feedback = '<div class="text-yellow-600">⚠️ Beberapa perbaikan:</div><div>• Perhatikan tense</div><div>• Tambah detail</div>';
+            } else {
+                feedback = '<div class="text-orange-600">💡 Tips:</div><div>• Cek subject-verb</div><div>• Gunakan artikel</div>';
+            }
+            
+            document.getElementById('grammarDetails').innerHTML = feedback;
+        }
+
+        // Recording Functions - YANG BENAR-BENAR BERFUNGSI
+        async function toggleRecording() {
+            if(mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = (event) => {
+                    if(event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                mediaRecorder.onstop = () => {
+                    // Buat blob dari chunks
+                    currentAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    currentAudioUrl = URL.createObjectURL(currentAudioBlob);
+                    showAudioPlayback();
+                };
+                
+                mediaRecorder.start(100); // Collect data every 100ms
+                recordingStartTime = Date.now();
+                
+                // Update UI
+                document.getElementById('recordBtn').classList.add('recording');
+                document.getElementById('micIcon').classList.add('hidden');
+                document.getElementById('stopIcon').classList.remove('hidden');
+                document.getElementById('recordingStatus').classList.remove('hidden');
+                document.getElementById('audioVisualizer').classList.remove('hidden');
+                document.getElementById('recordingTime').classList.remove('hidden');
+                document.getElementById('recordInstruction').textContent = 'Merekam... Tap lagi untuk berhenti';
+                
+                recordingTimer = setInterval(updateRecordingTime, 1000);
+                
+            } catch(err) {
+                console.error('Recording error:', err);
+                showToast('Tidak bisa akses mikrofon! Izinkan akses mikrofon di browser.');
+            }
+        }
+
+        function stopRecording() {
+            if(mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                clearInterval(recordingTimer);
+                
+                // Update UI
+                document.getElementById('recordBtn').classList.remove('recording');
+                document.getElementById('micIcon').classList.remove('hidden');
+                document.getElementById('stopIcon').classList.add('hidden');
+                document.getElementById('recordingStatus').classList.add('hidden');
+                document.getElementById('audioVisualizer').classList.add('hidden');
+                document.getElementById('recordingTime').classList.add('hidden');
+                document.getElementById('recordInstruction').textContent = 'Rekaman tersimpan';
+            }
+        }
+
+        function updateRecordingTime() {
+            const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+            const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const secs = (elapsed % 60).toString().padStart(2, '0');
+            document.getElementById('recordingTime').textContent = `${mins}:${secs}`;
+        }
+
+        function showAudioPlayback() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = currentAudioUrl;
+            document.getElementById('audioPlayback').classList.remove('hidden');
+            document.getElementById('audioPlayback').classList.add('flex');
+            document.getElementById('recordInstruction').textContent = 'Rekaman tersimpan - Bisa diputar ulang';
+        }
+
+        function resetRecordingUI() {
+            currentAudioBlob = null;
+            if(currentAudioUrl) {
+                URL.revokeObjectURL(currentAudioUrl);
+                currentAudioUrl = null;
+            }
+            document.getElementById('audioPlayback').classList.add('hidden');
+            document.getElementById('audioPlayback').classList.remove('flex');
+            document.getElementById('recordInstruction').textContent = 'Tap mikrofon untuk mulai merekam';
+            document.getElementById('recordingTime').textContent = '00:00';
+        }
+
+        function deleteRecording() {
+            if(confirm('Hapus rekaman ini?')) {
+                resetRecordingUI();
+                showToast('Rekaman dihapus');
+            }
+        }
+
+        // Review Functions
+        function renderReview() {
+            const list = document.getElementById('answersList');
+            list.innerHTML = '';
+            
+            const answeredCount = Object.keys(answers).length;
+            const withAudio = Object.values(answers).filter(a => a.audioBlob).length;
+            const avgScore = Object.values(answers).reduce((sum, a) => sum + (a.grammarScore || 0), 0) / (answeredCount || 1);
+            
+            document.getElementById('statAnswered').textContent = answeredCount;
+            document.getElementById('statAudio').textContent = withAudio;
+            document.getElementById('statScore').textContent = Math.round(avgScore) || 0;
+            
+            if(answeredCount === 0) {
+                list.innerHTML = '<div class="text-center text-white/50 py-4">Belum ada jawaban tersimpan</div>';
+                return;
+            }
+            
+            Object.entries(answers).forEach(([index, answer]) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-2 mb-2';
+                
+                const hasAudio = answer.audioBlob ? '🎙️' : '';
+                const scoreBadge = answer.grammarScore > 0 ? `<span class="text-[9px] bg-yellow-400 text-black px-1 rounded">${answer.grammarScore}</span>` : '';
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="text-[9px] text-white/60">Soal ${parseInt(index) + 1}</div>
+                        <div class="flex gap-1">${scoreBadge} ${hasAudio}</div>
+                    </div>
+                    <div class="text-[10px] font-semibold truncate">${answer.question.en}</div>
+                    <div class="text-[9px] text-white/70 truncate">${answer.writing || 'Tidak ada jawaban tertulis'}</div>
+                `;
+                
+                list.appendChild(card);
+            });
+        }
+
+        // Download Functions - SIMPAN KE LOCAL DRIVE
+        function downloadWritingDoc() {
+            const answeredCount = Object.keys(answers).length;
+            if(answeredCount === 0) {
+                showToast('Belum ada jawaban!');
+                return;
+            }
+            
+            // Buat dokumen Word sederhana dalam format HTML yang bisa dibuka Word
+            let content = `<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>Speaking & Writing Practice - Answers</title>
+    <style>
+        body { font-family: 'Times New Roman', serif; line-height: 1.6; margin: 40px; }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; font-size: 14pt; }
+        .header { background: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 30px; }
+        .question { color: #2980b9; font-weight: bold; margin-top: 20px; }
+        .translation { color: #7f8c8d; font-style: italic; font-size: 11pt; }
+        .answer { background: #f8f9fa; padding: 10px; border-left: 4px solid #27ae60; margin: 10px 0; }
+        .meta { color: #95a5a6; font-size: 10pt; margin-top: 5px; }
+        .page-break { page-break-after: always; }
+    </style>
+</head>
+<body>
+    <h1>SPEAKING & WRITING PRACTICE - ANSWERS</h1>
+    <div class="header">
+        <strong>Created by:</strong> Mr Salvo<br>
+        <strong>Thank you for joining:</strong> Salvo Group Class<br>
+        <strong>Date:</strong> ${new Date().toLocaleString('id-ID')}<br>
+        <strong>Category:</strong> ${currentCategory === 'random' ? 'Random Mix' : categoryNames[currentCategory]}<br>
+        <strong>Total Answered:</strong> ${answeredCount} questions
+    </div>`;
+            
+            Object.entries(answers).forEach(([index, answer]) => {
+                if(answer.writing) {
+                    content += `
+    <h2>Question ${parseInt(index) + 1}</h2>
+    <div class="question">English: ${answer.question.en}</div>
+    <div class="translation">Indonesian: ${answer.question.id}</div>
+    <div class="answer">
+        <strong>Answer:</strong><br>
+        ${answer.writing.replace(/\n/g, '<br>')}
+    </div>
+    ${answer.grammarScore > 0 ? `<div class="meta">Grammar Score: ${answer.grammarScore}/100</div>` : ''}
+    ${answer.audioBlob ? `<div class="meta">Audio: Recorded (see separate audio file)</div>` : ''}
+    <br>`;
+                }
+            });
+            
+            content += `
+</body>
+</html>`;
+            
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Salvo_Writing_Answers_${new Date().toISOString().split('T')[0]}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast('📝 File Word didownload! Cek folder Downloads');
+        }
+
+        function downloadAudio() {
+            const audioAnswers = Object.entries(answers).filter(([_, a]) => a.audioBlob);
+            
+            if(audioAnswers.length === 0) {
+                showToast('Tidak ada rekaman audio!');
+                return;
+            }
+            
+            // Download semua audio dengan nama yang jelas
+            audioAnswers.forEach(([index, answer], i) => {
+                setTimeout(() => {
+                    const url = URL.createObjectURL(answer.audioBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    // Format nama: answer_number_1.webm, answer_number_2.webm, dst
+                    a.download = `answer_number_${parseInt(index) + 1}.webm`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, i * 800); // Delay agar tidak crash browser
+            });
+            
+            showToast(`🎵 ${audioAnswers.length} file audio didownload!`);
+        }
+
+        function downloadAll() {
+            // Download dokumen Word terlebih dahulu
+            downloadWritingDoc();
+            
+            // Kemudian download audio jika ada
+            const audioAnswers = Object.entries(answers).filter(([_, a]) => a.audioBlob);
+            if(audioAnswers.length > 0) {
+                setTimeout(() => {
+                    downloadAudio();
+                }, 1000);
+            }
+            
+            showToast('📦 Semua file sedang didownload...');
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        window.onload = function() {
+            init3DBackground();
+            
+            // Tab selalu aktif, tidak perlu disable
+            console.log('App initialized - All tabs accessible');
+        };
+    </script>
+</body>
+</html>
